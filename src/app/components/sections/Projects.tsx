@@ -17,7 +17,7 @@ const projects = [
     title: 'CitiGuide Mobile App',
     description: 'Flutter/SwiftUI app with Supabase backend for city exploration',
     tags: ['Flutter', 'SwiftUI', 'Supabase', 'Geolocation'],
-    image: '/assets/images/citiguide.jpg',
+    image: '/assets/images/citiguide.png',
     link: '#',
     github: '#',
   },

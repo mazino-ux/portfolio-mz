@@ -1,4 +1,3 @@
-// src/components/ui/Button.tsx
 'use client'
 import { VariantProps, cva } from 'class-variance-authority'
 import { ButtonHTMLAttributes, forwardRef } from 'react'
@@ -29,15 +28,12 @@ const buttonVariants = cva(
 
 interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean
-}
+    VariantProps<typeof buttonVariants> {}
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? 'div' : 'button'
+  ({ className, variant, size, ...props }, ref) => {
     return (
-      <Comp
+      <button
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}

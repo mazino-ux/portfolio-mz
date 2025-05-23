@@ -41,7 +41,7 @@ export const Hero = () => {
           </p>
           
           <div className="flex flex-wrap justify-center gap-4">
-            <Button asChild variant="default">
+            <Button variant="default">
               <Link href="#projects">View My Work</Link>
             </Button>
             <Button variant="secondary">
