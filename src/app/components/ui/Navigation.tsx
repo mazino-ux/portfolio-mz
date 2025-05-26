@@ -1,67 +1,99 @@
+// src/components/ui/Navigation.tsx
 'use client'
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { ThemeToggle } from './ThemeToggle'
 import { Button } from './Button'
-
-const links = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Experience', href: '#experience' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Contact', href: '#contact' }
-]
+import { ThemeToggle } from './ThemeToggle'
+import { Menu, X } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { NAV_LINKS } from '@/config/constants'
 
 export const Navigation = () => {
-  const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
-    <motion.nav
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border"
-    >
-      <div className="container flex justify-between items-center h-16">
-        <Link href="/" className="text-xl font-bold cursor-hover">
-          Trinity<span className="text-primary">.</span>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all ${scrolled ? 'bg-background/90 backdrop-blur-sm border-b border-border' : 'bg-transparent'}`}>
+      <div className="container flex items-center justify-between h-16">
+        <Link href="/" className="text-xl font-bold flex items-center">
+          <span className="text-primary">T</span>
+          <span className="hidden sm:inline">rinity</span>
         </Link>
-        
-        <div className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-6">
+          {NAV_LINKS.map((link) => (
             <Link
-              key={link.name}
+              key={link.href}
               href={link.href}
-              className={`relative cursor-hover transition-colors hover:text-primary ${
-                pathname === link.href ? 'text-primary' : 'text-foreground'
-              }`}
+              className="text-sm font-medium hover:text-primary transition-colors"
             >
               {link.name}
-              {pathname === link.href && (
-                <motion.span
-                  layoutId="underline"
-                  className="absolute left-0 top-full mt-1 h-0.5 w-full bg-primary"
-                />
-              )}
             </Link>
           ))}
-        </div>
-        
-        <div className="flex items-center gap-4">
+        </nav>
+
+        <div className="hidden md:flex items-center gap-4">
           <ThemeToggle />
-          <Link
-            href="/resume.pdf"
-            download="Trinity-Ogwezi-Resume.pdf"
-            tabIndex={-1}
-            className="inline-block"
-          >
-            <Button variant="outline">
+          <Button variant="outline" size="sm">
+            <a href="/resume.pdf" download="Trinity-Ogwezi-Resume.pdf">
               Resume
-            </Button>
-          </Link>
+            </a>
+          </Button>
         </div>
+
+        {/* Mobile Menu Button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </Button>
       </div>
-    </motion.nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden bg-background border-b border-border"
+          >
+            <div className="container py-4 space-y-2">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block py-2 text-sm font-medium hover:text-primary transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </Link>
+              ))}
+              <div className="pt-4 border-t border-border flex items-center justify-between">
+                <ThemeToggle />
+                <Button variant="outline" size="sm">
+                  <a href="/resume.pdf" download="Trinity-Ogwezi-Resume.pdf">
+                    Resume
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </header>
   )
 }

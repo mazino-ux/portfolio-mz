@@ -1,0 +1,103 @@
+trinity-portfolio/
+├── public/
+│   ├── assets/
+│   │   ├── fonts/
+│   │   ├── images/
+│   │   └── models/ (3D assets)
+│   └── resume.pdf
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   ├── 3d/
+│   │   │   │   ├── Scene.tsx
+│   │   │   │   ├── Computer.tsx
+│   │   │   │   ├── Particles.tsx
+│   │   │   │   └── effects/
+│   │   │   │       ├── ScrollEffects.tsx
+│   │   │   │       └── HoverEffects.tsx
+│   │   │   ├── ui/
+│   │   │   │   ├── Cursor.tsx
+│   │   │   │   ├── Navigation.tsx
+│   │   │   │   ├── ThemeToggle.tsx
+│   │   │   │   └── ProgressBar.tsx
+│   │   │   └── sections/
+│   │   │       ├── Hero.tsx
+│   │   │       ├── About.tsx
+│   │   │       ├── Experience.tsx
+│   │   │       ├── Projects.tsx
+│   │   │       └── Contact.tsx
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── config/
+│   │   ├── constants.ts
+│   │   ├── theme.ts
+│   │   └── meta.ts
+│   ├── lib/
+│   │   ├── hooks/
+│   │   │   ├── useScrollProgress.ts
+│   │   │   ├── useScrollTrigger.ts
+│   │   │   └── useThreeAnimation.ts
+│   │   └── utils/
+│   │       ├── animations.ts
+│   │       ├── formatters.ts
+│   │       └── three-helpers.ts
+│   ├── styles/
+│   │   ├── globals.css
+│   │   ├── animations.css
+│   │   └── variables.css
+├── tailwind.config.ts
+├── postcss.config.ts
+├── next.config.ts
+├── tsconfig.json
+└── package.jsontrinity-portfolio/
+├── public/
+│   ├── assets/
+│   │   ├── fonts/
+│   │   ├── images/
+│   │   └── models/ (3D assets)
+│   └── resume.pdf
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   ├── 3d/
+│   │   │   │   ├── Scene.tsx
+│   │   │   │   ├── Computer.tsx
+│   │   │   │   ├── Particles.tsx
+│   │   │   │   └── effects/
+│   │   │   │       ├── ScrollEffects.tsx
+│   │   │   │       └── HoverEffects.tsx
+│   │   │   ├── ui/
+│   │   │   │   ├── Cursor.tsx
+│   │   │   │   ├── Navigation.tsx
+│   │   │   │   ├── ThemeToggle.tsx
+│   │   │   │   └── ProgressBar.tsx
+│   │   │   └── sections/
+│   │   │       ├── Hero.tsx
+│   │   │       ├── About.tsx
+│   │   │       ├── Experience.tsx
+│   │   │       ├── Projects.tsx
+│   │   │       └── Contact.tsx
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── config/
+│   │   ├── constants.ts
+│   │   ├── theme.ts
+│   │   └── meta.ts
+│   ├── lib/
+│   │   ├── hooks/
+│   │   │   ├── useScrollProgress.ts
+│   │   │   ├── useScrollTrigger.ts
+│   │   │   └── useThreeAnimation.ts
+│   │   └── utils/
+│   │       ├── animations.ts
+│   │       ├── formatters.ts
+│   │       └── three-helpers.ts
+│   ├── styles/
+│   │   ├── globals.css
+│   │   ├── animations.css
+│   │   └── variables.css
+├── tailwind.config.ts
+├── postcss.config.ts
+├── next.config.ts
+├── tsconfig.json
+└── package.json
