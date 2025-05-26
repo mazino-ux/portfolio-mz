@@ -1,101 +1,158 @@
-'use client'
 
+'use client'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { Briefcase, Code, Cpu, Server } from 'lucide-react'
+import { Briefcase, Code, Cpu, Server, Scan } from 'lucide-react'
+import QRCode from 'react-qr-code'
+// import { Button } from '../ui/Button' 
 
 const skills = [
-  { name: 'Frontend', icon: <Code className="h-6 w-6" />, items: ['React', 'Next.js', 'TypeScript', 'Three.js', 'Tailwind CSS'] },
-  { name: 'Backend', icon: <Server className="h-6 w-6" />, items: ['Node.js', 'Spring Boot', 'Python', 'REST/GraphQL', 'Microservices'] },
-  { name: 'Mobile', icon: <Cpu className="h-6 w-6" />, items: ['Flutter', 'Dart', 'SwiftUI'] },
-  { name: 'DevOps', icon: <Briefcase className="h-6 w-6" />, items: ['Docker', 'AWS', 'CI/CD', 'GitHub Actions', 'Nginx'] },
+  { 
+    name: 'Frontend', 
+    icon: <Code className="h-5 w-5" />, 
+    items: ['React', 'Next.js', 'TypeScript', 'Three.js', 'Tailwind CSS'],
+    color: '#3b82f6'
+  },
+  { 
+    name: 'Backend', 
+    icon: <Server className="h-5 w-5" />, 
+    items: ['Node.js', 'Spring Boot', 'Python', 'GraphQL', 'Microservices'],
+    color: '#10b981'
+  },
+  { 
+    name: 'Mobile', 
+    icon: <Cpu className="h-5 w-5" />, 
+    items: ['Flutter', 'Dart', 'SwiftUI'],
+    color: '#8b5cf6'
+  },
+  { 
+    name: 'DevOps', 
+    icon: <Briefcase className="h-5 w-5" />, 
+    items: ['Docker', 'AWS', 'CI/CD', 'GitHub Actions', 'Nginx'],
+    color: '#ec4899'
+  }
 ]
 
-export default function About() {
+export const About = () => {
   return (
-    <section id="about" className="relative z-0 py-20">
-      <div className="mx-auto max-w-7xl px-6 sm:px-16">
+    <section id="about" className="py-20">
+      <div className="container">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-16"
+          className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold text-dark dark:text-light">About Me</h2>
-          <div className="mt-2 h-1 w-20 rounded-full bg-primary-500" />
-          <p className="mt-4 max-w-3xl text-dark/60 dark:text-light/60">
-            Elite Full-Stack Engineer with 3+ years of experience architecting high-traffic SaaS platforms and enterprise-grade systems.
+          <h2 className="text-4xl font-bold mb-4">About <span className="text-primary">Me</span></h2>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Elite Full-Stack Engineer with 3+ years of experience architecting high-traffic SaaS platforms
           </p>
         </motion.div>
 
-        <div className="grid gap-12 md:grid-cols-2">
+        <div className="grid lg:grid-cols-3 gap-12 items-start">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="relative h-80 w-full overflow-hidden rounded-xl md:h-96"
+            className="relative aspect-square w-full max-w-md mx-auto lg:col-span-1"
           >
             <Image
               src="/assets/images/profile.jpg"
               alt="Trinity Ogwezi"
               fill
-              className="object-cover"
-              quality={100}
+              className="rounded-xl object-cover shadow-2xl border-2 border-primary"
+              priority
             />
-            <div className="absolute inset-0 bg-primary-500/10" />
+            <div className="absolute -bottom-6 -right-6 bg-background p-2 rounded-lg shadow-lg border">
+              <QRCode 
+                value="https://triniportfolio.vercel.app" 
+                size={100}
+                bgColor="transparent"
+                fgColor="currentColor"
+                className="text-foreground"
+              />
+              <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+                <Scan className="h-3 w-3" />
+                <span>Scan to visit</span>
+              </div>
+            </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-2xl font-bold text-dark dark:text-light">
-              Why I Deliver <span className="text-primary-500">Fire</span>
-            </h3>
-            <div className="mt-6 space-y-4 text-dark/70 dark:text-light/70">
-              <p>
-                <strong>Full-Stack Alchemist:</strong> Turn vague requirements into bulletproof systems—from WebSocket clusters to React hydration strategies.
-              </p>
-              <p>
-                <strong>Metrics-Driven:</strong> Every commit ties to a business KPI: latency, revenue, or user growth.
-              </p>
-              <p>
-                <strong>Architectural Visionary:</strong> Preempt bottlenecks before they exist. Built a self-healing API gateway that auto-scales during traffic spikes.
-              </p>
-            </div>
+          <div className="lg:col-span-2 space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl font-bold mb-6">
+                Why I Deliver <span className="text-primary">Excellence</span>
+              </h3>
+              
+              <div className="space-y-6">
+                <div className="p-6 bg-background border rounded-xl">
+                  <h4 className="font-semibold text-lg mb-2">Full-Stack Mastery</h4>
+                  <p className="text-muted-foreground">
+                    From pixel-perfect UIs to scalable backend systems, I bridge the entire stack with clean, maintainable code.
+                  </p>
+                </div>
 
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              {skills.map((skill, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
-                  viewport={{ once: true }}
-                  className="rounded-lg border border-dark/10 bg-light/50 p-4 backdrop-blur-sm dark:border-light/10 dark:bg-dark/50"
-                >
-                  <div className="flex items-center gap-2 text-primary-500">
-                    {skill.icon}
-                    <h4 className="font-medium">{skill.name}</h4>
-                  </div>
-                  <ul className="mt-2 flex flex-wrap gap-1">
-                    {skill.items.map((item, i) => (
-                      <li
-                        key={i}
-                        className="rounded-full bg-primary-500/10 px-3 py-1 text-xs font-medium text-primary-600 dark:text-primary-400"
+                <div className="p-6 bg-background border rounded-xl">
+                  <h4 className="font-semibold text-lg mb-2">Performance Obsessed</h4>
+                  <p className="text-muted-foreground">
+                    Every decision is measured against real user metrics. I optimize for speed, efficiency, and scalability.
+                  </p>
+                </div>
+
+                <div className="p-6 bg-background border rounded-xl">
+                  <h4 className="font-semibold text-lg mb-2">Future-Proof Solutions</h4>
+                  <p className="text-muted-foreground">
+                    I architect systems that evolve gracefully, anticipating growth and technological shifts.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl font-bold mb-6">Technical Expertise</h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {skills.map((skill, index) => (
+                  <div 
+                    key={index}
+                    className="p-4 border rounded-lg hover:shadow-md transition-shadow"
+                    style={{ borderLeftColor: skill.color, borderLeftWidth: '4px' }}
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      <div 
+                        className="p-2 rounded-lg" 
+                        style={{ backgroundColor: `${skill.color}20` }}
                       >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+                        {skill.icon}
+                      </div>
+                      <h4 className="font-medium">{skill.name}</h4>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {skill.items.map((item, i) => (
+                        <span 
+                          key={i}
+                          className="text-xs px-3 py-1 rounded-full bg-muted"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
