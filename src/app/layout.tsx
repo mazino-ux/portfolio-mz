@@ -1,10 +1,12 @@
 import '../styles/globals.css'
+import '../styles/animations.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/config/theme'
+import { ThemeBackground } from './components/3d/ThemeBackground'
+import { SkeletonLoader } from './components/ui/SkeletonLoader'
 
 const inter = Inter({ subsets: ['latin'] })
-
 
 export const metadata: Metadata = {
   title: 'Trinity Ogwezi | Senior Full-Stack Engineer',
@@ -20,6 +22,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} bg-background text-foreground`} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <ThemeBackground />
+          <SkeletonLoader />
           {children}
         </ThemeProvider>
       </body>

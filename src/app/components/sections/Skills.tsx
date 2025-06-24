@@ -292,26 +292,16 @@ export const Skills = () => {
     <section id="skills" className="relative py-20 bg-gradient-to-b from-background to-background/50 overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
+        {[...Array(5)].map((_, i) => (
+          <div 
             key={i}
             className="absolute rounded-full bg-green-500/10"
             style={{
-              width: Math.random() * 200 + 50,
-              height: Math.random() * 200 + 50,
+              width: `${Math.random() * 100 + 50}px`,
+              height: `${Math.random() * 100 + 50}px`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-            }}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{
-              opacity: [0, 0.1, 0],
-              scale: [0, 1.2, 0],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              ease: 'linear',
-              delay: Math.random() * 5,
+              opacity: 0.1
             }}
           />
         ))}

@@ -25,4 +25,5 @@ export type Review = {
     content: string
     rating: number
     avatar?: string
+    created_at: string
   }
