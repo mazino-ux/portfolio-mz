@@ -9,41 +9,21 @@ import { ProgressBar } from './components/ui/ProgressBar'
 import { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import { Skills } from './components/sections/Skills'
-
-// Simple loading component
-const Loading = () => <div className="absolute inset-0 bg-background/80" />
-
-// Dynamically import heavy components with proper typing
-const ThreeScene = dynamic(
-  () => import('./components/3d/ThreeScene').then((mod) => mod.default),
-  { 
-    ssr: false,
-    loading: () => <Loading />
-  }
-)
+import Projects from './components/sections/Projects'
 
 const LazyTestimonials = dynamic(
   () => import('./components/sections/Testimonials').then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => <Loading />
-  }
+  { ssr: false }
 )
 
 const LazyReviews = dynamic(
   () => import('./components/sections/Reviews').then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => <Loading />
-  }
+  { ssr: false }
 )
 
 const LazyContact = dynamic(
   () => import('./components/sections/Contact').then((mod) => mod.default),
-  {
-    ssr: false,
-    loading: () => <Loading />
-  }
+  { ssr: false }
 )
 
 export default function Home() {
@@ -58,20 +38,13 @@ export default function Home() {
         <About />
         <Experience />
         <Skills />
+        <Projects />
         
-        {/* Suspense boundary for async components */}
         <Suspense fallback={null}>
-          {/* 3D Background Section */}
-          <div className="relative h-[50vh] min-h-[400px]">
-            <ThreeScene />
-          </div>
-          
-          {/* Testimonials and Reviews */}
           <div className="container py-20">
             <LazyTestimonials />
             <LazyReviews />
           </div>
-          
           <LazyContact />
         </Suspense>
       </main>

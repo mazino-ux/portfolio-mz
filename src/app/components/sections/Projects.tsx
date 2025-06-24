@@ -2,12 +2,12 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import {  OrbitControls, useTexture } from '@react-three/drei'
+import { OrbitControls, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
-// import Image from 'next/image'
 import { ExternalLink, Github } from 'lucide-react'
+import { useAccentColor } from '@/config/theme'
 
-const ProjectCard3D = ({ image }: { image: string }) => {
+const ProjectCard3D = ({ image, accentColor }: { image: string; accentColor: string }) => {
   const meshRef = useRef<THREE.Mesh>(null)
   const texture = useTexture(image)
 
@@ -20,37 +20,44 @@ const ProjectCard3D = ({ image }: { image: string }) => {
   return (
     <mesh ref={meshRef}>
       <boxGeometry args={[2.5, 1.5, 0.2]} />
-      <meshStandardMaterial map={texture} roughness={0.4} metalness={0.3} />
+      <meshStandardMaterial 
+        map={texture} 
+        roughness={0.4} 
+        metalness={0.3} 
+        emissive={new THREE.Color(accentColor)}
+        emissiveIntensity={0.3}
+      />
     </mesh>
   )
 }
 
-const projects = [
-  {
-    title: 'V-Tickets Platform',
-    description: 'Event management SaaS platform handling 500K+ users with Next.js and TypeScript',
-    tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'React Query'],
-    image: '/assets/images/vtickets.png',
-    link: 'https://vtickets.site',
-    github: 'https://github.com/mazino-ux/vtickets',
-  },
-  {
-    title: 'CitiGuide Mobile App',
-    description: 'Flutter/SwiftUI app with Supabase backend for city exploration',
-    tags: ['Flutter', 'SwiftUI', 'Supabase', 'Geolocation'],
-    image: '/assets/images/citiguide.png',
-    link: '#',
-    github: '#',
-  },
-  {
-    title: 'Notification Engine',
-    description: 'Node.js + MongoDB system handling 10K+ concurrent WebSocket connections',
-    tags: ['Node.js', 'WebSockets', 'MongoDB', 'Redis'],
-    image: '/assets/images/vtickets.png',
-    link: '#',
-    github: '#',
-  },
-]
+const Particle = ({ index, count, accentColor }: { index: number; count: number; accentColor: string }) => {
+  const meshRef = useRef<THREE.Mesh>(null)
+  const angle = (index / count) * Math.PI * 2
+  const radius = 5
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      const time = state.clock.getElapsedTime()
+      meshRef.current.position.x = Math.cos(angle + time * 0.2) * radius
+      meshRef.current.position.y = Math.sin(angle + time * 0.3) * radius
+      meshRef.current.position.z = Math.sin(time * 0.5) * 2
+      meshRef.current.rotation.x = time * 0.2
+      meshRef.current.rotation.y = time * 0.1
+    }
+  })
+
+  return (
+    <mesh ref={meshRef}>
+      <sphereGeometry args={[0.1, 16, 16]} />
+      <meshStandardMaterial 
+        color={accentColor} 
+        emissive={accentColor} 
+        emissiveIntensity={0.5} 
+      />
+    </mesh>
+  )
+}
 
 export default function Projects() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -59,6 +66,34 @@ export default function Projects() {
     offset: ['start end', 'end start']
   })
   const y = useTransform(scrollYProgress, [0, 1], [0, -100])
+  const { accentColor } = useAccentColor()
+
+  const projects = [
+    {
+      title: 'V-Tickets Platform',
+      description: 'Event management SaaS platform handling 500K+ users with Next.js and TypeScript',
+      tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'React Query'],
+      image: '/assets/images/vtickets.png',
+      link: 'https://vtickets.site',
+      github: 'https://github.com/mazino-ux/vtickets',
+    },
+    {
+      title: 'CitiGuide Mobile App',
+      description: 'Flutter/SwiftUI app with Supabase backend for city exploration',
+      tags: ['Flutter', 'SwiftUI', 'Supabase', 'Geolocation'],
+      image: '/assets/images/citiguide.png',
+      link: '#',
+      github: '#',
+    },
+    {
+      title: 'Notification Engine',
+      description: 'Node.js + MongoDB system handling 10K+ concurrent WebSocket connections',
+      tags: ['Node.js', 'WebSockets', 'MongoDB', 'Redis'],
+      image: '/assets/images/vtickets.png',
+      link: '#',
+      github: '#',
+    },
+  ]
 
   return (
     <section 
@@ -71,7 +106,12 @@ export default function Projects() {
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} />
           {projects.map((_, i) => (
-            <Particle key={i} index={i} count={projects.length} />
+            <Particle 
+              key={i} 
+              index={i} 
+              count={projects.length} 
+              accentColor={accentColor} 
+            />
           ))}
         </Canvas>
       </div>
@@ -113,7 +153,7 @@ export default function Projects() {
                     <ambientLight intensity={1.2} />
                     <directionalLight position={[5, 10, 7]} intensity={1.5} castShadow />
                     <pointLight position={[0, 5, 10]} intensity={1.2} />
-                    <ProjectCard3D image={project.image} />
+                    <ProjectCard3D image={project.image} accentColor={accentColor} />
                     <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2.5} />
                   </Canvas>
                 </div>
@@ -127,6 +167,7 @@ export default function Projects() {
                     <span 
                       key={i}
                       className="px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium"
+                      style={{ backgroundColor: `${accentColor}20`, color: accentColor }}
                     >
                       {tag}
                     </span>
@@ -138,7 +179,8 @@ export default function Projects() {
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors text-sm"
+                    className="inline-flex items-center gap-2 px-4 py-3 rounded-lg text-primary-foreground hover:opacity-90 transition-opacity text-sm"
+                    style={{ backgroundColor: accentColor }}
                   >
                     <ExternalLink className="h-5 w-5" />
                     Live Demo
@@ -159,29 +201,5 @@ export default function Projects() {
         </div>
       </div>
     </section>
-  )
-}
-
-const Particle = ({ index, count }: { index: number; count: number }) => {
-  const meshRef = useRef<THREE.Mesh>(null)
-  const angle = (index / count) * Math.PI * 2
-  const radius = 5
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      const time = state.clock.getElapsedTime()
-      meshRef.current.position.x = Math.cos(angle + time * 0.2) * radius
-      meshRef.current.position.y = Math.sin(angle + time * 0.3) * radius
-      meshRef.current.position.z = Math.sin(time * 0.5) * 2
-      meshRef.current.rotation.x = time * 0.2
-      meshRef.current.rotation.y = time * 0.1
-    }
-  })
-
-  return (
-    <mesh ref={meshRef}>
-      <sphereGeometry args={[0.1, 16, 16]} />
-      <meshStandardMaterial color="#0ee7b7" emissive="#0ee7b7" emissiveIntensity={0.5} />
-    </mesh>
   )
 }
