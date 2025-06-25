@@ -3,36 +3,13 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Briefcase, Code, Cpu, Server, Scan } from 'lucide-react'
 import QRCode from 'react-qr-code'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Sphere } from '@react-three/drei'
-import * as THREE from 'three'
-
-const SkillSphere = ({ color }: { color: string }) => {
-  return (
-    <Sphere args={[1, 32, 32]}>
-      <meshStandardMaterial
-        color={new THREE.Color(color)}
-        metalness={0.7}
-        roughness={0.2}
-        emissive={new THREE.Color(color)}
-        emissiveIntensity={0.3}
-      />
-    </Sphere>
-  )
-}
+import { useAccentColor } from '@/config/theme'
 
 export const About = () => {
+  const { accentColor } = useAccentColor()
+
   return (
     <section id="about" className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 -z-10 opacity-10">
-        <Canvas camera={{ position: [0, 0, 10], fov: 25 }}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-          <SkillSphere color="#10b981" />
-          <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={2} />
-        </Canvas>
-      </div>
-
       <div className="container">
         <motion.div
           initial={{ opacity: 0 }}
@@ -42,7 +19,7 @@ export const About = () => {
           className="text-center mb-20"
         >
           <h2 className="text-5xl font-bold mb-6">
-            About <span className="text-primary">Me</span>
+            About <span style={{ color: accentColor }}>Me</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Elite Full-Stack Engineer with 3+ years of experience architecting high-traffic SaaS platforms
@@ -50,7 +27,6 @@ export const About = () => {
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-12 items-start">
-          {/* Profile image with 3D effect */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -58,7 +34,7 @@ export const About = () => {
             viewport={{ once: true }}
             className="relative aspect-square w-full max-w-md mx-auto lg:col-span-1"
           >
-            <div className="absolute inset-0 rounded-xl overflow-hidden shadow-2xl border-2 border-primary/50">
+            <div className="absolute inset-0 rounded-xl overflow-hidden shadow-2xl border-2" style={{ borderColor: accentColor }}>
               <Image
                 src="/assets/images/profile.jpg"
                 alt="Trinity Ogwezi"
@@ -68,9 +44,9 @@ export const About = () => {
               />
             </div>
             
-            <div className="absolute -bottom-6 -right-6 bg-background p-2 rounded-lg shadow-lg border border-primary/20">
+            <div className="absolute -bottom-6 -right-6 bg-background p-2 rounded-lg shadow-lg border">
               <QRCode 
-                value="https://triniportfolio.vercel.app" 
+                value="https://trinityogwezi.vercel.app" 
                 size={100}
                 bgColor="transparent"
                 fgColor="currentColor"
@@ -84,7 +60,6 @@ export const About = () => {
           </motion.div>
 
           <div className="lg:col-span-2 space-y-12">
-            {/* Expertise section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -92,7 +67,7 @@ export const About = () => {
               viewport={{ once: true }}
             >
               <h3 className="text-3xl font-bold mb-8">
-                Why I Deliver <span className="text-primary">Excellence</span>
+                Why I Deliver <span style={{ color: accentColor }}>Excellence</span>
               </h3>
               
               <div className="grid md:grid-cols-2 gap-6">
@@ -116,7 +91,7 @@ export const About = () => {
                 ].map((item, index) => (
                   <motion.div
                     key={index}
-                    className="p-6 bg-background/80 backdrop-blur-sm border rounded-xl hover:shadow-md transition-all"
+                    className="card-glass p-6 hover:shadow-md transition-all"
                     whileHover={{ y: -5 }}
                   >
                     <h4 className="font-semibold text-lg mb-2">{item.title}</h4>
@@ -126,7 +101,6 @@ export const About = () => {
               </div>
             </motion.div>
 
-            {/* Skills section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -164,7 +138,7 @@ export const About = () => {
                 ].map((skill, index) => (
                   <div 
                     key={index}
-                    className="p-6 border rounded-lg hover:shadow-md transition-shadow"
+                    className="card-glass p-6 hover:shadow-md transition-shadow"
                     style={{ 
                       borderLeftColor: skill.color,
                       borderLeftWidth: '4px'

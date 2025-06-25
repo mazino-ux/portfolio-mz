@@ -8,8 +8,9 @@ import { Textarea } from '../ui/Textarea'
 import { SocialIcons } from '../ui/SocialIcons'
 import { Notification } from '../ui/Notification'
 import { Mail, Phone, MapPin } from 'lucide-react'
+import { useAccentColor } from '@/config/theme'
 
-export default function Contact () {
+export default function Contact() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -21,6 +22,7 @@ export default function Contact () {
     type: 'success' | 'error' | 'warning' | 'info'
     message: string
   } | null>(null)
+  const { accentColor } = useAccentColor()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -84,7 +86,7 @@ export default function Contact () {
           className="max-w-4xl mx-auto"
         >
           <h2 className="text-4xl font-bold mb-12 text-center">
-            Get In <span className="text-primary">Touch</span>
+            Get In <span style={{ color: accentColor }}>Touch</span>
           </h2>
           
           <div className="grid md:grid-cols-2 gap-12">
@@ -98,8 +100,8 @@ export default function Contact () {
               
               <div className="space-y-4">
                 <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-3 rounded-full">
-                    <Mail className="w-5 h-5 text-primary" />
+                  <div className="p-3 rounded-full" style={{ backgroundColor: `${accentColor}10` }}>
+                    <Mail className="w-5 h-5" style={{ color: accentColor }} />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Email</p>
@@ -113,8 +115,8 @@ export default function Contact () {
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-3 rounded-full">
-                    <Phone className="w-5 h-5 text-primary" />
+                  <div className="p-3 rounded-full" style={{ backgroundColor: `${accentColor}10` }}>
+                    <Phone className="w-5 h-5" style={{ color: accentColor }} />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Phone</p>
@@ -128,8 +130,8 @@ export default function Contact () {
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-3 rounded-full">
-                    <MapPin className="w-5 h-5 text-primary" />
+                  <div className="p-3 rounded-full" style={{ backgroundColor: `${accentColor}10` }}>
+                    <MapPin className="w-5 h-5" style={{ color: accentColor }} />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Location</p>
@@ -218,7 +220,11 @@ export default function Contact () {
                 />
               </div>
               
-              <Button type="submit" className="w-full">
+              <Button 
+                type="submit" 
+                className="w-full"
+                style={{ backgroundColor: accentColor }}
+              >
                 Send Message
               </Button>
             </motion.form>

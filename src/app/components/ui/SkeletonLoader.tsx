@@ -1,8 +1,7 @@
-// components/ui/SkeletonLoader.tsx
 'use client'
-
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useAccentColor } from '@/config/theme'
 
 const quotes = [
   {
@@ -25,6 +24,7 @@ const quotes = [
 export const SkeletonLoader = () => {
   const [currentQuote, setCurrentQuote] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const { accentColor } = useAccentColor()
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 3000)
@@ -41,7 +41,7 @@ export const SkeletonLoader = () => {
   if (!isLoading) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-background/90 backdrop-blur-sm">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -52,10 +52,22 @@ export const SkeletonLoader = () => {
           {/* Animated 3D book */}
           <div className="absolute -top-16 left-1/2 -translate-x-1/2">
             <div className="relative w-24 h-32 perspective-1000">
-              <div className="absolute w-full h-full bg-primary/10 rounded-lg shadow-lg transform rotate-y-20 origin-left transition-all duration-1000 animate-pulse" />
-              <div className="absolute w-full h-full bg-primary/20 rounded-lg shadow-lg transform -rotate-y-5 origin-right transition-all duration-1000 animate-pulse" />
-              <div className="absolute w-full h-full bg-primary/30 rounded-lg shadow-lg flex items-center justify-center">
-                <div className="w-8 h-8 rounded-full bg-primary/50 animate-pulse" />
+              <div 
+                className="absolute w-full h-full rounded-lg shadow-lg transform rotate-y-20 origin-left transition-all duration-1000 animate-pulse"
+                style={{ backgroundColor: `${accentColor}10` }}
+              />
+              <div 
+                className="absolute w-full h-full rounded-lg shadow-lg transform -rotate-y-5 origin-right transition-all duration-1000 animate-pulse"
+                style={{ backgroundColor: `${accentColor}20` }}
+              />
+              <div 
+                className="absolute w-full h-full rounded-lg shadow-lg flex items-center justify-center"
+                style={{ backgroundColor: `${accentColor}30` }}
+              >
+                <div 
+                  className="w-8 h-8 rounded-full animate-pulse"
+                  style={{ backgroundColor: `${accentColor}50` }}
+                />
               </div>
             </div>
           </div>
@@ -69,7 +81,10 @@ export const SkeletonLoader = () => {
               transition={{ duration: 0.5 }}
               className="space-y-6"
             >
-              <h3 className="text-3xl font-bold text-primary">
+              <h3 
+                className="text-3xl font-bold"
+                style={{ color: accentColor }}
+              >
                 {quotes[currentQuote].quote}
               </h3>
               <p className="text-muted-foreground">
@@ -95,7 +110,8 @@ export const SkeletonLoader = () => {
                       duration: 1.5,
                       delay: i * 0.2
                     }}
-                    className="w-3 h-3 bg-primary rounded-full"
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: accentColor }}
                   />
                 ))}
               </div>

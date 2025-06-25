@@ -6,6 +6,7 @@ import { OrbitControls, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 import { ExternalLink, Github } from 'lucide-react'
 import { useAccentColor } from '@/config/theme'
+import { projects } from '@/config/constants'
 
 const ProjectCard3D = ({ image, accentColor }: { image: string; accentColor: string }) => {
   const meshRef = useRef<THREE.Mesh>(null)
@@ -68,33 +69,6 @@ export default function Projects() {
   const y = useTransform(scrollYProgress, [0, 1], [0, -100])
   const { accentColor } = useAccentColor()
 
-  const projects = [
-    {
-      title: 'V-Tickets Platform',
-      description: 'Event management SaaS platform handling 500K+ users with Next.js and TypeScript',
-      tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'React Query'],
-      image: '/assets/images/vtickets.png',
-      link: 'https://vtickets.site',
-      github: 'https://github.com/mazino-ux/vtickets',
-    },
-    {
-      title: 'CitiGuide Mobile App',
-      description: 'Flutter/SwiftUI app with Supabase backend for city exploration',
-      tags: ['Flutter', 'SwiftUI', 'Supabase', 'Geolocation'],
-      image: '/assets/images/citiguide.png',
-      link: '#',
-      github: '#',
-    },
-    {
-      title: 'Notification Engine',
-      description: 'Node.js + MongoDB system handling 10K+ concurrent WebSocket connections',
-      tags: ['Node.js', 'WebSockets', 'MongoDB', 'Redis'],
-      image: '/assets/images/vtickets.png',
-      link: '#',
-      github: '#',
-    },
-  ]
-
   return (
     <section 
       id="projects" 
@@ -124,7 +98,10 @@ export default function Projects() {
           viewport={{ once: true }}
           className="mb-20 text-center"
         >
-          <h2 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-emerald-400">
+          <h2 
+            className="text-5xl font-bold mb-4"
+            style={{ color: accentColor }}
+          >
             Featured Projects
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
