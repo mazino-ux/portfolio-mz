@@ -26,10 +26,6 @@
     --radius: 0.5rem;
   }
 
-  :root, .dark, .light {
-    --primary: var(--primary-h) var(--primary-s) var(--primary-l);
-  }
-
   .dark {
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
@@ -72,7 +68,6 @@
     @apply transition-colors duration-300 hover:text-primary;
   }
 
-  /* Fix for Next.js hydration mismatch */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -80,76 +75,67 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  .water-drop {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .water-drop::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .water-drop:hover::after {
+    opacity: 1;
+  }
+
+  .optimize-3d {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
 }
 
-body {
-  @apply bg-background text-foreground antialiased min-h-screen;
+@layer components {
+  .card-glass {
+    @apply bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg;
+  }
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-}
-
-/* Custom base styles */
-@layer base {
-  h1, h2, h3, h4 {
-    @apply font-bold tracking-tight;
-  }
-  h1 {
-    @apply text-4xl sm:text-5xl;
-  }
-  h2 {
-    @apply text-3xl sm:text-4xl;
-  }
+  scroll-padding-top: 6rem;
 }
 
 body {
-  @apply bg-background text-foreground antialiased min-h-screen;
-  /* Prevent scrollbar from causing layout shift */
-  overflow-x: hidden;
+  @apply bg-background text-foreground antialiased min-h-screen overflow-x-hidden;
 }
 
-/* Ensure content is properly layered above the canvas */
 main {
   position: relative;
   z-index: 10;
 }
 
-main::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  background: linear-gradient(
-    to bottom,
-    rgba(var(--background), 0.1) 0%,
-    rgba(var(--background), 0.3) 30%,
-    rgba(var(--background), 0.7) 100%
-  );
-  pointer-events: none;
+h1, h2, h3, h4 {
+  @apply font-bold tracking-tight;
 }
 
-/* Add to your globals.css */
-.perspective-1000 {
-  perspective: 1000px;
+h1 {
+  @apply text-4xl sm:text-5xl md:text-6xl;
 }
 
-.rotate-y-20 {
-  transform: rotateY(20deg);
+h2 {
+  @apply text-3xl sm:text-4xl md:text-5xl;
 }
 
-.-rotate-y-5 {
-  transform: rotateY(-5deg);
-}
-
-.origin-left {
-  transform-origin: left;
-}
-
-.origin-right {
-  transform-origin: right;
+h3 {
+  @apply text-2xl sm:text-3xl;
 }
