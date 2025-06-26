@@ -21,6 +21,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@tailwindcss/vite": "^4.1.7",
     "class-variance-authority": "^0.7.1",
+    "critters": "^0.0.23",
     "framer-motion": "^12.12.1",
     "gsap": "^3.13.0",
     "lucide-react": "^0.511.0",
