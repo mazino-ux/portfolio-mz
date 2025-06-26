@@ -2,11 +2,10 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-// import { Button } from '../ui/Button'
 import { Star } from 'lucide-react'
-import { Avatar, AvatarImage, AvatarFallback } from '../ui/Avatar'
-import { Review } from '@/types/data'
 import { cn } from '@/lib/utils'
+import { useAccentColor } from '@/config/theme'
+import { Review } from '@/types/data'
 
 export default function Reviews () {
   const [reviews, setReviews] = useState<Review[]>([])
@@ -20,6 +19,7 @@ export default function Reviews () {
     type: 'success' | 'error' | 'warning' | 'info'
     message: string
   } | null>(null)
+  const { accentColor } = useAccentColor()
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -28,7 +28,6 @@ export default function Reviews () {
           .from('reviews')
           .select('*')
           .order('created_at', { ascending: false })
-          .limit(10)
 
         if (error) throw error
 
@@ -84,6 +83,13 @@ export default function Reviews () {
     setFormData({ ...formData, rating })
   }
 
+  // Calculate statistics
+  const totalReviews = reviews.length
+  const averageRating = totalReviews > 0 
+    ? (reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews).toFixed(1)
+    : '0.0'
+  const approvalRate = '92%' // Placeholder
+
   return (
     <section id="reviews" className="pb-32">
       <div className="container">
@@ -100,7 +106,7 @@ export default function Reviews () {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -181,57 +187,44 @@ export default function Reviews () {
                 className="w-full py-6 text-lg font-medium"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                style={{ backgroundColor: accentColor }}
               >
                 Submit Review
               </motion.button>
             </form>
-          </motion.div>
 
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold mb-6">Recent Reviews</h3>
-            
-            {reviews.length === 0 ? (
-              <p className="text-muted-foreground">No reviews yet. Be the first to share your experience!</p>
-            ) : (
-              reviews.map((review, index) => (
-                <motion.div
-                  key={review.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-background/80 backdrop-blur-sm border rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <Avatar>
-                      <AvatarImage src={review.avatar} alt="Avatar" />
-                      <AvatarFallback>{review.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h4 className="font-semibold">{review.name}</h4>
-                      <p className="text-sm text-muted-foreground">{review.role}</p>
-                    </div>
-                    <div className="flex gap-1 ml-auto">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground'}`}
-                        />
-                      ))}
-                    </div>
+            {/* Statistics Panel */}
+            {reviews.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-12 p-6 bg-muted/10 rounded-xl"
+              >
+                <h3 className="text-xl font-bold mb-4">Community Feedback</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-background p-4 rounded-lg border text-center">
+                    <p className="text-sm text-muted-foreground">Total Reviews</p>
+                    <p className="text-2xl font-bold">{totalReviews}</p>
                   </div>
-                  <p className="text-muted-foreground italic">&ldquo;{review.content}&rdquo;</p>
-                  <p className="text-xs text-muted-foreground mt-3">
-                    {new Date(review.created_at).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                </motion.div>
-              ))
+                  <div className="bg-background p-4 rounded-lg border text-center">
+                    <p className="text-sm text-muted-foreground">Average Rating</p>
+                    <p className="text-2xl font-bold flex items-center justify-center">
+                      {averageRating}
+                      <Star className="inline ml-1 w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    </p>
+                  </div>
+                  <div className="bg-background p-4 rounded-lg border text-center">
+                    <p className="text-sm text-muted-foreground">Approval Rate</p>
+                    <p className="text-2xl font-bold">{approvalRate}</p>
+                  </div>
+                  <div className="bg-background p-4 rounded-lg border text-center">
+                    <p className="text-sm text-muted-foreground">Response Time</p>
+                    <p className="text-2xl font-bold">&lt;24h</p>
+                  </div>
+                </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -1,3 +1,4 @@
+// Testimonials.tsx
 'use client'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/Avatar'
@@ -6,10 +7,12 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Testimonial } from '@/types/data'
 import { cn } from '@/lib/utils'
+import { useAccentColor } from '@/config/theme'
 
 export default function Testimonials () {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
+  const { accentColor } = useAccentColor()
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -72,7 +75,7 @@ export default function Testimonials () {
                 transition={{ duration: 0.5 }}
                 className="bg-background/80 backdrop-blur-sm border rounded-2xl p-10 shadow-xl"
               >
-                <Quote className="w-8 h-8 text-primary/30 mb-4" />
+                <Quote className="w-8 h-8 text-primary/30 mb-4" style={{ color: accentColor }} />
                 
                 <div className="flex flex-col md:flex-row gap-8 items-center">
                   <div className="flex-shrink-0">
@@ -123,6 +126,7 @@ export default function Testimonials () {
                       'w-3 h-3 rounded-full transition-all',
                       i === currentTestimonial ? 'bg-primary w-6' : 'bg-muted-foreground/30'
                     )}
+                    style={i === currentTestimonial ? { backgroundColor: accentColor } : {}}
                     aria-label={`Go to testimonial ${i + 1}`}
                   />
                 ))}

@@ -47,7 +47,7 @@ export const Hero = () => {
           className="max-w-3xl mx-auto"
         >
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 mt-[-2rem]"
             style={{ color: accentColor }}
           >
             Trinity Ogwezi

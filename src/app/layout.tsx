@@ -5,7 +5,8 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/config/theme'
 import { ThemeBackground } from './components/3d/ThemeBackground'
 import { SkeletonLoader } from './components/ui/SkeletonLoader'
-// import { GoogleAnalytics } from './components/analytics/GoogleAnalytics'
+import { GoogleAnalytics } from './components/analytics/GoogleAnalytics'
+import PerformanceGuard from './components/PerformanceGuard'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -31,8 +32,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${inter.variable}`}>
       <body className="bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          {/* <GoogleAnalytics /> */}
-          <ThemeBackground />
+          <GoogleAnalytics /> 
+          <PerformanceGuard>
+            <ThemeBackground />
+          </PerformanceGuard>
           <SkeletonLoader />
           {children}
         </ThemeProvider>

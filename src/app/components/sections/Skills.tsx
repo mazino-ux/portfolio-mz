@@ -1,32 +1,50 @@
+// Skills.tsx
 'use client'
 import { motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState, useRef, Suspense } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
+import * as THREE from 'three'
 import { useDeviceDetect } from '@/hooks/useDeviceDetect'
 import { useAccentColor } from '@/config/theme'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Sphere } from '@react-three/drei'
-import * as THREE from 'three'
+import { SKILLS } from '@/config/constants'
 
-const SkillSphere = ({ color, active }: { color: string; active: boolean }) => {
+const SkillSphere = ({ 
+  color, 
+  active,
+  isMobile,
+  position = [0, 0, 0]
+}: { 
+  color: string; 
+  active: boolean;
+  isMobile: boolean;
+  position?: [number, number, number];
+}) => {
   const meshRef = useRef<THREE.Mesh>(null)
+  // const targetScale = active ? 1.2 : 1
+  const intensity = active ? 0.8 : 0.3
+  const rotationSpeed = isMobile ? 0.01 : 0.02
   
-  useFrame((state) => {
+  useFrame(( ) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.1
-      meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.1
+      meshRef.current.rotation.x += rotationSpeed
+      meshRef.current.rotation.y += rotationSpeed
     }
   })
 
   return (
-    <Sphere args={[1, 32, 32]} ref={meshRef}>
-      <meshStandardMaterial
+    <mesh ref={meshRef} position={position}>
+      <sphereGeometry args={[1, isMobile ? 16 : 32, isMobile ? 16 : 32]} />
+      <meshPhysicalMaterial
         color={new THREE.Color(color)}
-        metalness={0.7}
-        roughness={0.2}
+        metalness={0.5}
+        roughness={0.3}
+        transmission={0.6}
         emissive={new THREE.Color(color)}
-        emissiveIntensity={active ? 0.5 : 0.2}
+        emissiveIntensity={intensity}
+        clearcoat={0.8}
       />
-    </Sphere>
+    </mesh>
   )
 }
 
@@ -45,41 +63,12 @@ export const Skills = () => {
     }
   }, [isMobile])
 
-  const skills = [
-    { 
-      name: 'Next.js', 
-      items: ['SSR', 'SSG', 'ISR', 'API Routes', 'Middleware'],
-      color: '#000000'
-    },
-    { 
-      name: 'TypeScript', 
-      items: ['Type Safety', 'Interfaces', 'Generics', 'Utility Types', 'Decorators'],
-      color: '#3178C6'
-    },
-    { 
-      name: 'React', 
-      items: ['Hooks', 'Context', 'Suspense', 'Concurrent Mode', 'Server Components'],
-      color: '#61DAFB'
-    },
-    { 
-      name: 'Node.js', 
-      items: ['Express', 'NestJS', 'GraphQL', 'WebSockets', 'Streams'],
-      color: '#339933'
-    },
-    { 
-      name: 'AWS', 
-      items: ['Lambda', 'S3', 'EC2', 'RDS', 'CloudFront'],
-      color: '#FF9900'
-    },
-    { 
-      name: 'Docker', 
-      items: ['Containers', 'Kubernetes', 'Compose', 'Swarm', 'CI/CD'],
-      color: '#2496ED'
-    }
-  ]
+  const handleSkillClick = (skillName: string) => {
+    setActiveSkill(activeSkill === skillName ? null : skillName)
+  }
 
   return (
-    <section id="skills" className="relative py-20 bg-gradient-to-b from-background to-background/50 overflow-hidden">
+    <section id="skills" className="relative py-20">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(5)].map((_, i) => (
           <div 
@@ -120,7 +109,7 @@ export const Skills = () => {
             viewport={{ once: true, margin: '-100px' }}
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 flex-1"
           >
-            {skills.map((skill, index) => (
+            {SKILLS.map((skill, index) => (
               <motion.div
                 key={skill.name}
                 initial={{ opacity: 0, y: 20 }}
@@ -134,7 +123,7 @@ export const Skills = () => {
                     ? 'ring-2 ring-primary'
                     : 'border-muted/30 hover:bg-muted/10'
                 }`}
-                onClick={() => setActiveSkill(activeSkill === skill.name ? null : skill.name)}
+                onClick={() => handleSkillClick(skill.name)}
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -149,7 +138,7 @@ export const Skills = () => {
             ))}
           </motion.div>
 
-          {enable3D && (
+          {enable3D ? (
             <motion.div
               className="w-full lg:w-[400px] h-[400px] rounded-xl border border-muted/20 shadow-lg relative overflow-hidden"
               initial={{ opacity: 0, scale: 0.8 }}
@@ -159,20 +148,20 @@ export const Skills = () => {
             >
               <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
                 <ambientLight intensity={0.5} />
-                <pointLight position={[10, 10, 10]} intensity={0.5} />
-                {skills.map((skill, i) => (
+                <pointLight position={[5, 5, 5]} intensity={0.5} />
+                <Suspense fallback={null}>
                   <SkillSphere 
-                    key={i}
-                    color={skill.color}
-                    active={activeSkill === skill.name}
+                    color={SKILLS.find(s => s.name === activeSkill)?.color || accentColor} 
+                    active={!!activeSkill}
+                    isMobile={isMobile}
                   />
-                ))}
-                <OrbitControls 
-                  enableZoom={false}
-                  enablePan={false}
-                  autoRotate
-                  autoRotateSpeed={0.5}
-                />
+                  <OrbitControls 
+                    enableZoom={!isMobile}
+                    enablePan={!isMobile}
+                    autoRotate
+                    autoRotateSpeed={0.5}
+                  />
+                </Suspense>
               </Canvas>
               
               {activeSkill && (
@@ -190,6 +179,10 @@ export const Skills = () => {
                 </motion.div>
               )}
             </motion.div>
+          ) : (
+            <div className="bg-muted/10 border rounded-xl w-full h-64 flex items-center justify-center">
+              <p className="text-muted-foreground">3D visualization disabled for performance</p>
+            </div>
           )}
         </div>
 
@@ -201,35 +194,27 @@ export const Skills = () => {
             transition={{ duration: 0.3 }}
             className="mt-8 bg-muted/10 border border-muted/20 rounded-xl p-6 backdrop-blur-sm"
           >
-            <h3 className="text-2xl font-bold mb-2" style={{ color: accentColor }}>
+            <h3 className="text-2xl font-bold mb-4" style={{ color: accentColor }}>
               {activeSkill} Expertise
             </h3>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h4 className="font-semibold mb-2">Key Projects</h4>
-                <ul className="space-y-2 text-sm">
-                  {[
-                    'Production-grade implementations',
-                    'Performance-optimized solutions',
-                    'Scalable architecture designs'
-                  ].map((project, i) => (
+                <h4 className="font-semibold mb-3">Key Projects</h4>
+                <ul className="space-y-3">
+                  {SKILLS.find(s => s.name === activeSkill)?.projects.map((project, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span style={{ color: accentColor }}>▹</span>
+                      <span className="text-primary mt-1">▹</span>
                       <span>{project}</span>
                     </li>
                   ))}
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold mb-2">Achievements</h4>
-                <ul className="space-y-2 text-sm">
-                  {[
-                    'Production-proven implementations',
-                    'Measurable performance gains',
-                    'Enterprise-grade solutions'
-                  ].map((achievement, i) => (
+                <h4 className="font-semibold mb-3">Achievements</h4>
+                <ul className="space-y-3">
+                  {SKILLS.find(s => s.name === activeSkill)?.achievements.map((achievement, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <span style={{ color: accentColor }}>▹</span>
+                      <span className="text-primary mt-1">▹</span>
                       <span>{achievement}</span>
                     </li>
                   ))}

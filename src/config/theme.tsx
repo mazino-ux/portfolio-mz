@@ -1,3 +1,4 @@
+// theme.tsx
 'use client'
 import { ThemeProvider as NextThemesProvider, type ThemeProviderProps } from 'next-themes'
 import { createContext, useContext, useState, useEffect } from 'react'
@@ -38,6 +39,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
     // Update CSS variables
     const hsl = hexToHSL(accentColor)
     document.documentElement.style.setProperty('--primary', hsl)
+    document.documentElement.style.setProperty('--accent', accentColor)
     localStorage.setItem('accentColor', accentColor)
   }, [accentColor])
 
