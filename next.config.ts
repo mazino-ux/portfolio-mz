@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     scrollRestoration: true,
-    optimizeCss: true,
+    // optimizeCss: true,
   },
   compress: true,
   productionBrowserSourceMaps: false,
