@@ -2,20 +2,24 @@
 
 import Script from 'next/script'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { pageview } from '@/lib/gtag'
 
-export const GoogleAnalytics = () => {
+const GAInner = () => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') {
-      const url = pathname + searchParams.toString()
+      const url = pathname + (searchParams?.toString() ?? '')
       pageview(url)
     }
   }, [pathname, searchParams])
 
+  return null
+}
+
+export const GoogleAnalytics = () => {
   if (process.env.NODE_ENV !== 'production') {
     return null
   }
@@ -40,6 +44,10 @@ export const GoogleAnalytics = () => {
           `,
         }}
       />
+      <Suspense fallback={null}>
+        <GAInner />
+      </Suspense>
     </>
   )
 }
+
