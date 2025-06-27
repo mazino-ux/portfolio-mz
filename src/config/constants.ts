@@ -1,9 +1,10 @@
-// constants.ts
 export const NAV_LINKS = [
   { name: 'Home', href: '#home' },
   { name: 'About', href: '#about' },
+  { name: 'Skills', href: '#skills' },
   { name: 'Experience', href: '#experience' },
   { name: 'Projects', href: '#projects' },
+  { name: 'Reviews', href: '#reviews' },
   { name: 'Contact', href: '#contact' }
 ] as const;
 
