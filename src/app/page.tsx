@@ -11,10 +11,10 @@ import dynamic from 'next/dynamic'
 import { Skills } from './components/sections/Skills'
 import Projects from './components/sections/Projects'
 
-const LazyTestimonials = dynamic(
-  () => import('./components/sections/Testimonials').then((mod) => mod.default),
-  { ssr: false }
-)
+// const LazyTestimonials = dynamic(
+//   () => import('./components/sections/Testimonials').then((mod) => mod.default),
+//   { ssr: false }
+// )
 
 const LazyReviews = dynamic(
   () => import('./components/sections/Reviews').then((mod) => mod.default),
@@ -42,7 +42,7 @@ export default function Home() {
         
         <Suspense fallback={null}>
           <div className="container py-20">
-            <LazyTestimonials />
+            {/* <LazyTestimonials /> */}
             <LazyReviews />
           </div>
           <LazyContact />

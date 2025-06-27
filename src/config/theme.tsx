@@ -1,4 +1,3 @@
-// theme.tsx
 'use client'
 import { ThemeProvider as NextThemesProvider, type ThemeProviderProps } from 'next-themes'
 import { createContext, useContext, useState, useEffect } from 'react'
